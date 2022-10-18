@@ -1,17 +1,18 @@
+from concurrent.futures.process import _WorkItem
 from enum import auto
+from random import choices
+from unicodedata import category
 from django.db import models
 
-class Category(models.Model):
-    title = models.CharField(max_length=25)
-
-    def __str__(self):
-        return f'{self.title}'
-
 class Post(models.Model):
+    WORK = 'Work'
+    PERSONAL = 'Personal'
+    SPORTS = 'Sports'
+    CATEGORY = [(WORK, 'Work'), (PERSONAL, 'Personal'), (SPORTS, 'Sports')]
+    category = models.CharField(max_length=10, choices=CATEGORY)
     name = models.CharField(max_length=25)
     content = models.TextField()
     created_date = models.DateTimeField(auto_now_add=True)
-    title = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='posts')
 
     def __str__(self):
         return f'{self.name}'
